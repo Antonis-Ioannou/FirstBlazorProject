@@ -1,4 +1,5 @@
 ﻿using BlazorWebAssemblyTutorial.Shared;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,39 +9,84 @@ namespace BlazorWebAssemblyTutorial.Server.Models
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        public Task<Employee> AddEmployee(Employee empployee)
+        private readonly AppDbContext appDbContext;
+        public EmployeeRepository(AppDbContext appDbContext)
         {
-            throw new NotImplementedException();
+            this.appDbContext = appDbContext;
+        } 
+
+        public async Task<Employee> AddEmployee(Employee employee)
+        {
+
+            var resutlt = await appDbContext.Employees.AddAsync(employee);
+            await appDbContext.SaveChangesAsync();
+            return resutlt.Entity;
         }
 
-        public Task DeleteEmployee(int empployeeId)
+        public async Task DeleteEmployee(int employeeId)
         {
-            throw new NotImplementedException();
+            var result = await appDbContext.Employees
+                .FirstOrDefaultAsync(e => e.EmployeeId == employeeId);
+            if (result != null)
+            {
+                appDbContext.Employees.Remove(result);
+                await appDbContext.SaveChangesAsync();
+            }
         }
 
-        public Task<Employee> GetEmployee(int empployeeId)
+        public async Task<Employee> GetEmployee(int employeeId)
         {
-            throw new NotImplementedException();
+            return await appDbContext.Employees.Include(e => e.Department)
+                .FirstOrDefaultAsync(e => e.EmployeeId == employeeId);
         }
 
-        public Task<Employee> GetEmployeeByEmail(string email)
+        public async Task<Employee> GetEmployeeByEmail(string email)
         {
-            throw new NotImplementedException();
+            return await appDbContext.Employees.
+                FirstOrDefaultAsync(e => e.Email == email);
         }
 
-        public Task<IEnumerable<Employee>> GetEmployees()
+        public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            throw new NotImplementedException();
+            return await appDbContext.Employees.ToListAsync();
         }
 
-        public Task<IEnumerable<Employee>> Search(string name, Gender? gender)
+        public async Task<IEnumerable<Employee>> Search(string name, Gender? gender)
         {
-            throw new NotImplementedException();
+            IQueryable<Employee> query = appDbContext.Employees;
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(e => e.FirstName.Contains(name) || e.LastName.Contains(name));
+            }
+
+            if (gender != null)
+            {
+                query = query.Where(e => e.Gender == gender);
+            }
+
+            return await query.ToListAsync();
         }
 
-        public Task<Employee> UpdateEmployee(Employee empployee)
+        public async Task<Employee> UpdateEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            var result = await appDbContext.Employees
+                .FirstOrDefaultAsync(e => e.EmployeeId == employee.EmployeeId);
+
+            if (result != null)
+            {
+                result.FirstName = employee.FirstName;
+                result.LastName = employee.LastName;
+                result.Email = employee.Email;
+                result.DateOfBirth = employee.DateOfBirth;
+                result.Gender = employee.Gender;
+                result.DepartmentId = employee.DepartmentId;
+                result.PhotoPath = employee.PhotoPath;
+
+                await appDbContext.SaveChangesAsync();
+                return result;
+            }
+
+            return null;
         }
     }
 }
