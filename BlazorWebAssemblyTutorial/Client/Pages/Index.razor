@@ -3,7 +3,12 @@
 @page "/"
 
 <SfGrid DataSource="@Employees">
-
+    <GridColumns>
+        <GridColumn Field=@nameof(Employee.EmployeeId) HeaderText="ID"></GridColumn>
+        <GridColumn Field=@nameof(Employee.FirstName) HeaderText="First Name"></GridColumn>
+        <GridColumn Field=@nameof(Employee.LastName) HeaderText="Last Name"></GridColumn>
+        <GridColumn Field=@nameof(Employee.Email) HeaderText="Email"></GridColumn>
+    </GridColumns>
 </SfGrid>
 
  @code{
@@ -20,9 +25,9 @@
          Employee e1 = new Employee
          {
              EmployeeId = 1,
-             FirstName = "John",
-             LastName = "Hastings",
-             Email = "john@alphaSoftware.com",
+             FirstName = "Antonis",
+             LastName = "Ion",
+             Email = "antonis@alphaSoftware.com",
              DateOfBirth = new DateTime(1980, 10, 5),
              Gender = Gender.Male,
              Department = new Department { DepartmentId = 1, DepartmentName = "IT" },
@@ -32,11 +37,11 @@
          Employee e2 = new Employee
          {
              EmployeeId = 2,
-             FirstName = "Mary",
-             LastName = "Smith",
-             Email = "mary@alphaSoftware.com",
+             FirstName = "Teo",
+             LastName = "Mar",
+             Email = "teo@alphaSoftware.com",
              DateOfBirth = new DateTime(1984, 11, 11),
-             Gender = Gender.Female,
+             Gender = Gender.Male,
              Department = new Department { DepartmentId = 1, DepartmentName = "IT" },
              PhotoPath = "images/mary.png"
          };
