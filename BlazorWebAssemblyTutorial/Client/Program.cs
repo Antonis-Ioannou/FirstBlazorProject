@@ -1,3 +1,4 @@
+using BlazorWebAssemblyTutorial.Client.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,10 +19,12 @@ namespace BlazorWebAssemblyTutorial.Client
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NjMxMDU3QDMxMzkyZTMxMmUzMEs4Um9OQ1A2Yk8za2YzQWMwZUlpby8yWkFOaHFxWUpPVmZmL1Z2OGR1NzA9");
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddHttpClient<IEmployeeService,EmployeeService>(client =>
+            {
+                client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+            });
+            //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddSyncfusionBlazor();
-
             await builder.Build().RunAsync();
         }
     }
