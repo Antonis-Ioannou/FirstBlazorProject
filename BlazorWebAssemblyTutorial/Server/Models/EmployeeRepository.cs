@@ -17,6 +17,10 @@ namespace BlazorWebAssemblyTutorial.Server.Models
 
         public async Task<Employee> AddEmployee(Employee employee)
         {
+            if (employee.Department != null)
+            {
+                appDbContext.Entry(employee.Department).State = EntityState.Unchanged;
+            }
 
             var resutlt = await appDbContext.Employees.AddAsync(employee);
             await appDbContext.SaveChangesAsync();
@@ -54,6 +58,7 @@ namespace BlazorWebAssemblyTutorial.Server.Models
         public async Task<IEnumerable<Employee>> Search(string name, Gender? gender)
         {
             IQueryable<Employee> query = appDbContext.Employees;
+
             if (!string.IsNullOrEmpty(name))
             {
                 query = query.Where(e => e.FirstName.Contains(name) || e.LastName.Contains(name));
@@ -79,7 +84,14 @@ namespace BlazorWebAssemblyTutorial.Server.Models
                 result.Email = employee.Email;
                 result.DateOfBirth = employee.DateOfBirth;
                 result.Gender = employee.Gender;
-                result.DepartmentId = employee.DepartmentId;
+                if (employee.DepartmentId != 0)
+                {
+                    result.DepartmentId = employee.DepartmentId;
+                }
+                else if (employee.Department != null)
+                {
+                    result.DepartmentId = employee.Department.DepartmentId;
+                }
                 result.PhotoPath = employee.PhotoPath;
 
                 await appDbContext.SaveChangesAsync();
