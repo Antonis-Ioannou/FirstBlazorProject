@@ -2,6 +2,12 @@
 @using Syncfusion.Blazor.Grids
 @page "/"
 
+<style>
+    .e-spinner-pane .e-spinner-inner .e-spin-bootstrap4 {
+        stroke: aquamarine;
+    }
+</style>
+
 <SfSpinner @bind-Visible="SpinnerVisible" Label="Loading data..." Size="50" Type="@SpinnerType.Bootstrap4">
 </SfSpinner>
 
