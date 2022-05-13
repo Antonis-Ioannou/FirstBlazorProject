@@ -39,11 +39,11 @@ namespace BlazorWebAssemblyTutorial.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetEmployees()
+        public async Task<ActionResult> GetEmployees(int skip, int take=5)
         {
             try
             {
-                return Ok(await employeeRepository.GetEmployees());
+                return Ok(await employeeRepository.GetEmployees(skip, take));
             }
             catch (Exception)
             {
