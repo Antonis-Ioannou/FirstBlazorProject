@@ -55,7 +55,7 @@ namespace BlazorWebAssemblyTutorial.Server.Models
         {
             EmployeeDataResult result = new EmployeeDataResult()
             {
-                Employees = appDbContext.Employees.Skip(skip).Take(take).OrderBy(orderBy),
+                Employees = appDbContext.Employees.OrderBy(orderBy).Skip(skip).Take(take),
                 Count = await appDbContext.Employees.CountAsync()
             };
 

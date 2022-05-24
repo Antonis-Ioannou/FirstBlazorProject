@@ -22,6 +22,7 @@ namespace BlazorWebAssemblyTutorial.Client.Services
             if (dataManagerRequest.Sorted != null)
             {
                 List<Sort> sortlist = dataManagerRequest.Sorted;
+                sortlist.Reverse();
                 orderByString = string.Join(",",sortlist.Select(s=>string.Format("{0} {1}",s.Name, s.Direction)));
             }
 
