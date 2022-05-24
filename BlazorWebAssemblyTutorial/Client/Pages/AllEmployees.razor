@@ -19,7 +19,7 @@
             <GridColumn Field=@nameof(Employee.LastName) HeaderText="Last Name"></GridColumn>
             <GridColumn Format="d" Field=@nameof(Employee.DateOfBirth) HeaderText="Date of Birth"></GridColumn>
             <GridColumn Field=@nameof(Employee.Gender) HeaderText="Gender"></GridColumn>
-            <GridColumn AllowGrouping="false" Field=@nameof(Employee.Email) HeaderText="Email"></GridColumn>
+            <GridColumn AllowGrouping="false" AllowFiltering="false" Field=@nameof(Employee.Email) HeaderText="Email"></GridColumn>
         </GridColumns>
     </SfGrid>
 </div> 
