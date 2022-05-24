@@ -36,14 +36,14 @@ namespace BlazorWebAssemblyTutorial.Client.Services
             throw new NotImplementedException();
         }
 
-        public async Task<EmployeeDataResult> GetEmployees(int skip,int take)
+        public async Task<EmployeeDataResult> GetEmployees(int skip,int take, string orderBy)
         {
-            return await httpClient.GetFromJsonAsync<EmployeeDataResult>($"/api/employees?skip={skip}&take={take}");
+            return await httpClient.GetFromJsonAsync<EmployeeDataResult>($"/api/employees?skip={skip}&take={take}&orderBy={orderBy}");
         }
 
         public Task<IEnumerable<Employee>> Search(string name, Gender? gender)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException();  
         }
 
         public Task<Employee> UpdateEmployee(Employee empployee)

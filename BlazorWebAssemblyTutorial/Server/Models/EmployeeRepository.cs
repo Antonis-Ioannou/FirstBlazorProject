@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Linq.Dynamic.Core;
 
 namespace BlazorWebAssemblyTutorial.Server.Models
 {
@@ -50,11 +51,11 @@ namespace BlazorWebAssemblyTutorial.Server.Models
                 FirstOrDefaultAsync(e => e.Email == email);
         }
 
-        public async Task<EmployeeDataResult> GetEmployees(int skip=0, int take=5)
+        public async Task<EmployeeDataResult> GetEmployees(int skip=0, int take=5, string orderBy="EmployeeId")
         {
             EmployeeDataResult result = new EmployeeDataResult()
             {
-                Employees = appDbContext.Employees.Skip(skip).Take(take),
+                Employees = appDbContext.Employees.Skip(skip).Take(take).OrderBy(orderBy),
                 Count = await appDbContext.Employees.CountAsync()
             };
 

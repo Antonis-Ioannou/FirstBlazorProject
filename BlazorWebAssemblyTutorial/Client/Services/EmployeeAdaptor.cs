@@ -17,8 +17,16 @@ namespace BlazorWebAssemblyTutorial.Client.Services
         }
         public async override Task<object> ReadAsync(DataManagerRequest dataManagerRequest, string key = null)
         {
+            string orderByString = null;
+
+            if (dataManagerRequest.Sorted != null)
+            {
+                List<Sort> sortlist = dataManagerRequest.Sorted;
+                orderByString = string.Join(",",sortlist.Select(s=>string.Format("{0} {1}",s.Name, s.Direction)));
+            }
+
             EmployeeDataResult result = 
-                await employeeService.GetEmployees(dataManagerRequest.Skip, dataManagerRequest.Take);
+                await employeeService.GetEmployees(dataManagerRequest.Skip, dataManagerRequest.Take, orderByString);
 
             DataResult dataResult = new DataResult()
             {
