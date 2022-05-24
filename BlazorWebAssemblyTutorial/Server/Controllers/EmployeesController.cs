@@ -19,6 +19,20 @@ namespace BlazorWebAssemblyTutorial.Server.Controllers
             this.employeeRepository = employeeRepository;
         }
 
+        [HttpGet("all")]
+        public async Task<ActionResult> GetAllEmployees()
+        {
+            try
+            {
+                return Ok(await employeeRepository.GetAllEmployees());
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from database");
+            }
+        }
+
         [HttpGet("{search}")]
         public async Task<ActionResult<IEnumerable<Employee>>> Search(string name, Gender? gender)
         {

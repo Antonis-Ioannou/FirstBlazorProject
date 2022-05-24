@@ -14,6 +14,7 @@
         <GridColumn Field=@nameof(Employee.EmployeeId) HeaderText="ID"></GridColumn>
         <GridColumn Field=@nameof(Employee.FirstName) HeaderText="First Name"></GridColumn>
         <GridColumn Field=@nameof(Employee.LastName) HeaderText="Last Name"></GridColumn>
+        <GridColumn Field=@nameof(Employee.Gender) HeaderText="Gender"></GridColumn>
         <GridColumn Field=@nameof(Employee.Email) HeaderText="Email"></GridColumn>
     </GridColumns>
 </SfGrid>
@@ -21,4 +22,4 @@
 @code{
 
     public string[] pageDropdown = new string[] { "All", "5", "10", "15", "20" };
-}
+}  

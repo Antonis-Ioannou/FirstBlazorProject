@@ -9,6 +9,7 @@ namespace BlazorWebAssemblyTutorial.Server.Models
     public interface IEmployeeRepository
     {
         Task<IEnumerable<Employee>> Search(string name, Gender? gender);
+        Task<IEnumerable<Employee>> GetAllEmployees();
         Task<EmployeeDataResult> GetEmployees(int skip, int take, string orderBy);
         Task<Employee> GetEmployee(int empployeeId);
         Task<Employee> GetEmployeeByEmail(string email);

@@ -26,6 +26,11 @@ namespace BlazorWebAssemblyTutorial.Client.Services
             throw new NotImplementedException();
         }
 
+        public async Task<IEnumerable<Employee>> GetAllEmployees()
+        {
+            return await httpClient.GetFromJsonAsync<IEnumerable<Employee>>("/api/employees/all");
+        }
+
         public async Task<Employee> GetEmployee(int empployeeId)
         {
             return await httpClient.GetFromJsonAsync<Employee>($"api/employees/{empployeeId}");

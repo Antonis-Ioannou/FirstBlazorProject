@@ -1,0 +1,41 @@
+﻿@page "/all"
+
+@using BlazorWebAssemblyTutorial.Shared
+@using Syncfusion.Blazor.Grids
+
+<div style="width:1100px">
+    <SfGrid DataSource="@Employees" AllowGrouping="true" AllowPaging="true" AllowSorting="true" AllowFiltering="true">
+        <GridPageSettings PageSize="5" PageSizes="@pageDropdown" PageCount="3"></GridPageSettings>
+        <GridSortSettings AllowUnsort="false">
+            <GridSortColumns>
+                <GridSortColumn Field="EmployeeId"></GridSortColumn>
+            </GridSortColumns>
+        </GridSortSettings>
+        <GridFilterSettings Mode="FilterBarMode.Immediate" ImmediateModeDelay="200"></GridFilterSettings>
+        <GridGroupSettings ShowGroupedColumn="true"></GridGroupSettings>
+        <GridColumns>
+            <GridColumn Field=@nameof(Employee.EmployeeId) HeaderText="ID"></GridColumn>
+            <GridColumn Field=@nameof(Employee.FirstName) HeaderText="First Name"></GridColumn>
+            <GridColumn Field=@nameof(Employee.LastName) HeaderText="Last Name"></GridColumn>
+            <GridColumn Format="d" Field=@nameof(Employee.DateOfBirth) HeaderText="Date of Birth"></GridColumn>
+            <GridColumn Field=@nameof(Employee.Gender) HeaderText="Gender"></GridColumn>
+            <GridColumn AllowGrouping="false" Field=@nameof(Employee.Email) HeaderText="Email"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+</div> 
+
+@code {
+
+    public string[] pageDropdown = new string[] { "All", "5", "10", "15", "20" };
+
+    public List<Employee> Employees { get; set; }
+
+    [Inject]
+    public IEmployeeService EmployeeService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Employees = (await EmployeeService.GetAllEmployees()).ToList();
+    }
+
+}

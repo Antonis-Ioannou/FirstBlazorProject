@@ -107,5 +107,10 @@ namespace BlazorWebAssemblyTutorial.Server.Models
 
             return null;
         }
+
+        public async Task<IEnumerable<Employee>> GetAllEmployees()
+        {
+            return await appDbContext.Employees.ToListAsync();
+        }
     }
 }
