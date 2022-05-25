@@ -1,10 +1,10 @@
-﻿@page "/all"
+﻿@page "/"
 
 @using BlazorWebAssemblyTutorial.Shared
 @using Syncfusion.Blazor.Grids
 
 <div style="width:1100px">
-    <SfGrid DataSource="@Employees" AllowGrouping="true" AllowPaging="true" AllowSorting="true" AllowFiltering="true">
+    <SfGrid @ref="employeeGrid" DataSource="@Employees" AllowGrouping="true" AllowPaging="true" AllowSorting="true" AllowFiltering="true">
         <GridPageSettings PageSize="5" PageSizes="@pageDropdown" PageCount="3"></GridPageSettings>
         <GridSortSettings AllowUnsort="false">
             <GridSortColumns>
@@ -18,7 +18,14 @@
             <GridColumn Field=@nameof(Employee.FirstName) HeaderText="First Name"></GridColumn>
             <GridColumn Field=@nameof(Employee.LastName) HeaderText="Last Name"></GridColumn>
             <GridColumn Format="d" Field=@nameof(Employee.DateOfBirth) HeaderText="Date of Birth"></GridColumn>
-            <GridColumn Field=@nameof(Employee.Gender) HeaderText="Gender"></GridColumn>
+            <GridColumn Field=@nameof(Employee.Gender) HeaderText="Gender">
+                <FilterTemplate>
+                    <SfDropDownList Placeholder="All" DataSource="genderDropDownSource" TItem="DropDownListItem" TValue="string">
+                        <DropDownListFieldSettings Value="Value" Text="Text"></DropDownListFieldSettings>
+                        <DropDownListEvents TItem="DropDownListItem" TValue="string" ValueChange="@GenderSelectionChange"></DropDownListEvents>
+                    </SfDropDownList>
+                </FilterTemplate>
+            </GridColumn>
             <GridColumn AllowGrouping="false" AllowFiltering="false" Field=@nameof(Employee.Email) HeaderText="Email"></GridColumn>
         </GridColumns>
     </SfGrid>
@@ -29,6 +36,22 @@
     public string[] pageDropdown = new string[] { "All", "5", "10", "15", "20" };
 
     public List<Employee> Employees { get; set; }
+
+    public SfGrid<Employee> employeeGrid { get; set; }
+
+    protected void GenderSelectionChange(ChangeEventArgs<string, DropDownListItem> args)
+    {
+        if (args.Value == "All")
+        {
+            employeeGrid.ClearFiltering("Gender");
+        }
+        else
+        {
+            employeeGrid.FilterByColumn("Gender", "equal", args.Value);
+        }
+    }
+
+    List<DropDownListItem> genderDropDownSource = EnumHelper.ConvertEnumToDropDownSource<Gender>("All","All");
 
     [Inject]
     public IEmployeeService EmployeeService { get; set; }
