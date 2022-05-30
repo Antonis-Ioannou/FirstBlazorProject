@@ -1,8 +1,5 @@
 ﻿@page "/all"
 
-@using BlazorWebAssemblyTutorial.Shared
-@using Syncfusion.Blazor.Grids
-
 <div style="width:1100px">
     <SfGrid @ref="employeeGrid" DataSource="@Employees" AllowGrouping="true" AllowPaging="true" AllowSorting="true" AllowFiltering="true">
         <GridPageSettings PageSize="5" PageSizes="@pageDropdown" PageCount="3"></GridPageSettings>

@@ -1,0 +1,35 @@
+﻿@page "/search"
+
+@{ 
+    var SearchTool = new List<string> { "Search" };
+    var SearchColumns = new string[] { "FirstName", "LastName","Gender" };
+}
+
+<div style="width:700px">
+    <SfGrid DataSource="@Employees" AllowPaging="true" Toolbar="@SearchTool">
+        <GridSearchSettings Operator="Operator.Contains" Fields="@SearchColumns"></GridSearchSettings>
+        <GridPageSettings PageSize="5" PageSizes="@pageDropdown" PageCount="3"></GridPageSettings>
+        <GridColumns>
+            <GridColumn Field=@nameof(Employee.EmployeeId) HeaderText="ID"></GridColumn>
+            <GridColumn Field=@nameof(Employee.FirstName) HeaderText="First Name"></GridColumn>
+            <GridColumn Field=@nameof(Employee.LastName) HeaderText="Last Name"></GridColumn>
+            <GridColumn Field=@nameof(Employee.Gender) HeaderText="Gender"></GridColumn>
+            <GridColumn AllowSearching="false" Field=@nameof(Employee.Email) HeaderText="Email"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+</div>
+
+@code{
+
+    public string[] pageDropdown = new string[] { "All", "5", "10", "15", "20" };
+
+    public List<Employee> Employees { get; set; }
+
+    [Inject]
+    public IEmployeeService EmployeeService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Employees = (await EmployeeService.GetAllEmployees()).ToList();
+    }
+}  
