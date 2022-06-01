@@ -11,16 +11,31 @@ namespace BlazorWebAssemblyTutorial.Server.Models
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly AppDbContext appDbContext;
-        public EmployeeRepository(AppDbContext appDbContext)
+        private readonly IDepartmentRepository departmentRepository;
+        public EmployeeRepository(AppDbContext appDbContext, IDepartmentRepository departmentRepository)
         {
             this.appDbContext = appDbContext;
+            this.departmentRepository = departmentRepository;
         } 
 
         public async Task<Employee> AddEmployee(Employee employee)
         {
-            if (employee.Department != null)
+            if (employee.DepartmentId == 0)
             {
-                appDbContext.Entry(employee.Department).State = EntityState.Unchanged;
+                throw new Exception("Employee DepartmetId cannot be ZERO");
+            }
+            else
+            {
+                Department department = await departmentRepository.GetDepartment(employee.DepartmentId);
+                if (department == null)
+                {
+                    throw new Exception($"Invalid Employee Department ID {employee.DepartmentId}");
+                }
+                else
+                {
+                    employee.Department = department;
+                }
+
             }
 
             var resutlt = await appDbContext.Employees.AddAsync(employee);
