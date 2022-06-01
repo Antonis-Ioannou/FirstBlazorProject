@@ -15,7 +15,7 @@ namespace BlazorWebAssemblyTutorial.Server.Controllers
     {
         private readonly IDepartmentRepository departmentRepository;
 
-        public DepartmentsController(DepartmentRepository departmentRepository)
+        public DepartmentsController(IDepartmentRepository departmentRepository)
         {
             this.departmentRepository = departmentRepository;
         }
