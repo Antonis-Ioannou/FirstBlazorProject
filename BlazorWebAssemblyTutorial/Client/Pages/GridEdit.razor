@@ -2,8 +2,7 @@
 @using Syncfusion.Blazor.DropDowns
 
 <div style="width:900px">
-    <SfGrid DataSource="@Employees" AllowPaging="true" 
-            Toolbar="@(new List<string>(){"Add","Edit","Update","Delete","Cancel"})">
+    <SfGrid DataSource="@Employees" AllowPaging="true" Toolbar="@(new List<string>(){"Add","Edit","Update","Delete","Cancel"})">
         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
         <GridPageSettings PageSize="5" PageSizes="@pageDropdown" PageCount="3"></GridPageSettings>
         <GridColumns>
@@ -13,12 +12,16 @@
             <GridColumn Field=@nameof(Employee.DateOfBirth) Format="d" HeaderText="Date of Birth"></GridColumn>
             <GridColumn Field="Department.DepartmentName" HeaderText="Department" Width="140px">
                 <EditTemplate>
-                    <SfDropDownList DataSource="@Departments" TItem="Department" TValue="int">
+                    <SfDropDownList DataSource="@Departments" TItem="Department" TValue="int" @bind-Value="@((context as Employee).DepartmentId)">
                         <DropDownListFieldSettings Text="DepartmentName" Value="DepartmentId"></DropDownListFieldSettings>
                     </SfDropDownList>
                 </EditTemplate>
             </GridColumn>
-            <GridColumn Field=@nameof(Employee.Gender) HeaderText="Gender"></GridColumn>
+            <GridColumn Field=@nameof(Employee.Gender) HeaderText="Gender">
+                <EditTemplate>
+                    <SfDropDownList DataSource="@GenderEnumValues" TItem="string" TValue="Gender" @bind-Value="@((context as Employee).Gender)"></SfDropDownList>
+                </EditTemplate>
+            </GridColumn>
             <GridColumn AllowSearching="false" Field=@nameof(Employee.Email) HeaderText="Email"></GridColumn>
         </GridColumns>
     </SfGrid>
@@ -27,6 +30,8 @@
 @code{
 
     public string[] pageDropdown = new string[] { "All", "5", "10", "15", "20" };
+
+    public string[] GenderEnumValues { get; set; } = Enum.GetNames(typeof(Gender));
 
     public List<Employee> Employees { get; set; }
 
